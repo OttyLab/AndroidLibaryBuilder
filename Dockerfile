@@ -96,11 +96,13 @@ RUN cd zlib-1.2.11 && ./configure --prefix=$HOME/usr && \
 
 
 # miner
-#RUN curl -OL https://github.com/bitzeny/cpuminer/archive/master.zip && \
-#    unzip master.zip && cd cpuminer-master && \
-#    mkdir m4 && cp $HOME/usr/share/aclocal/libcurl.m4 m4 && \
-#    sed -i -e 's/aclocal/aclocal -I m4/' autogen.sh && \
-#    echo 'ACLOCAL_AMFLAGS = -I m4' >> Makefile.am &&\
-#    ./autogen.sh && ./configure --host=arm-linux-androideabi --with-libcurl=$HOME/usr && make
+RUN curl -OL https://github.com/bitzeny/cpuminer/archive/master.zip && \
+    unzip master.zip && cd cpuminer-master && \
+    mkdir m4 && cp $HOME/usr/share/aclocal/libcurl.m4 m4 && \
+    sed -i -e 's/aclocal/aclocal -I m4/' autogen.sh && \
+    echo 'minerd_LDFLAGS += -fPIE -pie' >> Makefile.am &&\
+    echo 'minerd_CPPFLAGS += -fPIE' >> Makefile.am &&\
+    echo 'ACLOCAL_AMFLAGS = -I m4' >> Makefile.am &&\
+    ./autogen.sh && ./configure --host=arm-linux-androideabi --with-libcurl=$HOME/usr && make
 
 #ENTRYPOINT cp -r /Android/output/* /output

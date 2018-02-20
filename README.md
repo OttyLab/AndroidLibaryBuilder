@@ -8,6 +8,12 @@ This Dockerfile builds Android libraries. Currently, following libraries are bui
 
 All the libraries are installed into /root/usr
 
+
+Also following binary is built
+
++ cpuminer
+
+
 ## Usage
 
 ```
