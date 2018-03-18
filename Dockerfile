@@ -52,57 +52,17 @@ RUN mkdir=toolchain-arm && bash $NDK_ROOT/build/tools/make-standalone-toolchain.
     --verbose --platform=android-22 --install-dir=toolchain-arm --arch=arm \
     --toolchain=arm-linux-androideabi-clang3.6 --stl=libc++
 
-ENV TOOLCHAIN /Android/toolchain-arm
-ENV SYSROOT $TOOLCHAIN/sysroot
-ENV PATH $PATH:$TOOLCHAIN/bin:$SYSROOT/usr/local/bin
+RUN mkdir=toolchain-aarch64 && bash $NDK_ROOT/build/tools/make-standalone-toolchain.sh \
+    --verbose --platform=android-22 --install-dir=toolchain-aarch64 --arch=arm64 \
+    --toolchain=aarch64-linux-androideabi-clang3.6 --stl=libc++
 
-# Configure toolchain path
+RUN mkdir=toolchain-x86 && bash $NDK_ROOT/build/tools/make-standalone-toolchain.sh \
+    --verbose --platform=android-22 --install-dir=toolchain-x86 --arch=x86 \
+    --toolchain=x86-linux-androideabi-clang3.6 --stl=libc++
 
-ENV ARCH armv7
+RUN mkdir=toolchain-x86_64 && bash $NDK_ROOT/build/tools/make-standalone-toolchain.sh \
+    --verbose --platform=android-22 --install-dir=toolchain-x86_64 --arch=x86_64 \
+    --toolchain=x86_64-linux-androideabi-clang3.6 --stl=libc++
 
-#ENV CROSS_COMPILE arm-linux-androideabi
-ENV CC arm-linux-androideabi-clang
-ENV CXX arm-linux-androideabi-clang++
-ENV AR arm-linux-androideabi-ar
-ENV AS arm-linux-androideabi-as
-ENV LD arm-linux-androideabi-ld
-ENV RANLIB arm-linux-androideabi-ranlib
-ENV NM arm-linux-androideabi-nm
-ENV STRIP arm-linux-androideabi-strip
-ENV CHOST arm-linux-androideabi
-
-ENV CXXFLAGS -std=c++14 -Wno-error=unused-command-line-argument
-
-# curl
-RUN curl -OL http://curl.haxx.se/download/curl-7.57.0.tar.gz && \
-	tar -xzf curl-7.57.0.tar.gz
-
-RUN cd curl-7.57.0 && ./configure --prefix=$HOME/usr --host=arm-linux-androideabi && \
-    make && make install 
-
-# jansson
-RUN curl -O http://www.digip.org/jansson/releases/jansson-2.10.tar.gz && \
-    tar -xzf jansson-2.10.tar.gz
-
-RUN cd jansson-2.10 && ./configure --prefix=$HOME/usr --host=arm-linux-androideabi && \
-    make && make install
-
-# zlib
-RUN curl -OL https://www.zlib.net/zlib-1.2.11.tar.gz && \
-    tar -xzf zlib-1.2.11.tar.gz
-
-RUN cd zlib-1.2.11 && ./configure --prefix=$HOME/usr && \
-    make && make install
-
-
-# miner
-RUN curl -OL https://github.com/bitzeny/cpuminer/archive/master.zip && \
-    unzip master.zip && cd cpuminer-master && \
-    mkdir m4 && cp $HOME/usr/share/aclocal/libcurl.m4 m4 && \
-    sed -i -e 's/aclocal/aclocal -I m4/' autogen.sh && \
-    echo 'minerd_LDFLAGS += -fPIE -pie' >> Makefile.am &&\
-    echo 'minerd_CPPFLAGS += -fPIE' >> Makefile.am &&\
-    echo 'ACLOCAL_AMFLAGS = -I m4' >> Makefile.am &&\
-    ./autogen.sh && ./configure --host=arm-linux-androideabi --with-libcurl=$HOME/usr && make
-
-#ENTRYPOINT cp -r /Android/output/* /output
+# build.sh
+COPY build.sh .
