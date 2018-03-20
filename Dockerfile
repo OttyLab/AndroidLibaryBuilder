@@ -49,19 +49,27 @@ ENV PATH $PATH:$ANDROID_HOME/platform-tools
 # Make stand alone toolchain (Modify platform / arch here)
 
 RUN mkdir=toolchain-arm && bash $NDK_ROOT/build/tools/make-standalone-toolchain.sh \
-    --verbose --platform=android-22 --install-dir=toolchain-arm --arch=arm \
+    --verbose --platform=android-19 --install-dir=toolchain-19-arm --arch=arm \
+    --toolchain=arm-linux-androideabi-clang3.6 --stl=libc++
+
+RUN mkdir=toolchain-x86 && bash $NDK_ROOT/build/tools/make-standalone-toolchain.sh \
+    --verbose --platform=android-19 --install-dir=toolchain-19-x86 --arch=x86 \
+    --toolchain=arm-linux-androideabi-clang3.6 --stl=libc++
+
+RUN mkdir=toolchain-arm && bash $NDK_ROOT/build/tools/make-standalone-toolchain.sh \
+    --verbose --platform=android-21 --install-dir=toolchain-21-arm --arch=arm \
     --toolchain=arm-linux-androideabi-clang3.6 --stl=libc++
 
 RUN mkdir=toolchain-aarch64 && bash $NDK_ROOT/build/tools/make-standalone-toolchain.sh \
-    --verbose --platform=android-22 --install-dir=toolchain-aarch64 --arch=arm64 \
+    --verbose --platform=android-21 --install-dir=toolchain-21-aarch64 --arch=arm64 \
     --toolchain=aarch64-linux-androideabi-clang3.6 --stl=libc++
 
 RUN mkdir=toolchain-x86 && bash $NDK_ROOT/build/tools/make-standalone-toolchain.sh \
-    --verbose --platform=android-22 --install-dir=toolchain-x86 --arch=x86 \
+    --verbose --platform=android-21 --install-dir=toolchain-21-x86 --arch=x86 \
     --toolchain=x86-linux-androideabi-clang3.6 --stl=libc++
 
 RUN mkdir=toolchain-x86_64 && bash $NDK_ROOT/build/tools/make-standalone-toolchain.sh \
-    --verbose --platform=android-22 --install-dir=toolchain-x86_64 --arch=x86_64 \
+    --verbose --platform=android-21 --install-dir=toolchain-21-x86_64 --arch=x86_64 \
     --toolchain=x86_64-linux-androideabi-clang3.6 --stl=libc++
 
 # build.sh
