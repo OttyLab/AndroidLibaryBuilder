@@ -31,18 +31,18 @@ RUN mkdir /Android && cd Android && mkdir output
 WORKDIR /Android
 
 RUN wget http://dl.google.com/android/android-sdk_r24.3.3-linux.tgz
-RUN wget https://dl.google.com/android/repository/android-ndk-r14b-linux-x86_64.zip
+RUN wget https://dl.google.com/android/repository/android-ndk-r17b-linux-x86_64.zip
 
 # Extracting ndk/sdk
 
 RUN tar -xvzf android-sdk_r24.3.3-linux.tgz && \
-	unzip android-ndk-r14b-linux-x86_64.zip
+	unzip android-ndk-r17b-linux-x86_64.zip
 
 
 # Set ENV variables
 
 ENV ANDROID_HOME /Android/android-sdk-linux
-ENV NDK_ROOT /Android/android-ndk-r14b
+ENV NDK_ROOT /Android/android-ndk-r17b
 ENV PATH $PATH:$ANDROID_HOME/tools
 ENV PATH $PATH:$ANDROID_HOME/platform-tools
 
