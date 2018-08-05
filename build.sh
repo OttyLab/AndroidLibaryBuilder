@@ -14,7 +14,7 @@ curl -OL https://www.zlib.net/zlib-1.2.11.tar.gz && \
     tar -xzf zlib-1.2.11.tar.gz
 
 # miner
-curl -OL https://github.com/bitzeny/cpuminer/archive/master.zip && \
+curl -OL https://github.com/BitzenyCoreDevelopers/cpuminer/archive/master.zip && \
     unzip master.zip
 
 CXXFLAGS='-std=c++14 -Wno-error=unused-command-line-argument'
@@ -81,7 +81,7 @@ do
             echo 'minerd_CPPFLAGS += -fPIE' >> Makefile.am && \
             echo 'ACLOCAL_AMFLAGS = -I m4' >> Makefile.am && \
             ./autogen.sh && \
-            ./configure --prefix=$HOME/miner/${API}/${ARCH} --host=${TARGET} --with-libcurl=$HOME/usr/${API}/${ARCH} && \
+            ./configure --prefix=$HOME/miner/${API}/${ARCH} --host=${TARGET} --with-libcurl=$HOME/usr/${API}/${ARCH} CFLAGS="-O3 -march=native -funroll-loops -fomit-frame-pointer" && \
             make && make install && make clean
         popd
     done
